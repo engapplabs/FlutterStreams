@@ -52,6 +52,16 @@ class HomeScreenState extends State<HomeScreen> {
     super.dispose();
   }
 
+  //OBS: O método ".listen()" retorna uma StreamSubscription". 
+  //A documentação diz que:
+  //A inscrição fornece eventos ao ouvinte (listener), e segura o callback usado para
+  //cuidar dos eventos. A inscrição também pode ser usada para se desinscrever de eventos
+  //ou para temporariamente pausar os eventos de uma stream.
+
+  //Resumindo: A inscrição de uma stream pode tanto ser utilizada para pausar e resumir eventos de uma stream quando preciso.main(List<String> args) {
+  //Sempre cancele a inscrição quando não for mais preciso o uso dela.
+  }
+
   Future<String> getData() async {
     await Future.delayed(Duration(seconds: 5));
     print("Fetched Data");
