@@ -22,34 +22,34 @@ class HomeScreen extends StatefulWidget {
 }
 
 class HomeScreenState extends State<HomeScreen> {
+  ///1. Estamos criando nossa stream através do StreamController
+  ///Uma classe que controla a stream que é criada
+  StreamController<String> streamController = new StreamController();
   @override
   void initState() {
     super.initState();
 
-    //Parte 1: Criando uma stream simples
-    print("Creating a sample stream...");
-    //1. Criamos uma stream a qual coleeta os dados da função getData()
-    //que retorna uma string após 5 segundos
-    Stream<String> stream = new Stream.fromFuture(getData());
-    print("Created the stream");
-
-    //2. Depois, nós escutamos a stream para observar a chegada de dados com  o método .listen()
-
-    stream.listen((data) {
+    print("Creating a StreamController...");
+    streamController.stream.listen((data) {
       print("Data received: " + data);
     }, onDone: () {
-      //Método que define que foi completado
-      print("Task Done");
+      print("Task done");
+      //2. Perceba que o método "onDone" não foi chamado.
+      //Isso por que nossa stream está ativa e ainda não foi fechada
     }, onError: (error) {
-      //Método que retorna qualquer erro que foi encontrado
       print("Some error");
     });
 
-    ///É preciso sempre terminar a stream quando a tarefa é completada.
-    ///Caso contrário, problemas de performance podem surgir quando a aplicação
-    ///se tornar complexa ou caso tenha muitas stream ativas.
-
+    streamController.add("This is a test data");
     print("Code controller is here");
+  }
+
+  //3. Por isso é obrigatório fechar a stream manualmente.
+  //Para previnir vazamento de memória
+  @override
+  void dispose() {
+    streamController.close();
+    super.dispose();
   }
 
   Future<String> getData() async {
